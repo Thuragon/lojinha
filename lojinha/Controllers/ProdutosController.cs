@@ -61,5 +61,12 @@ namespace lojinha.Controllers
 
             return View(vm);
         }
+
+        public async Task<IActionResult>Details (string id)
+        {
+
+            var produto = await _produtoServices.ObterProduto(id);
+            return Json(produto);
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace lojinha.Core.Services
     public interface IProdutoServices
     {
         Task<List<Produto>> ObterProdutos();
+        Task<Produto> ObterProduto(string id);
     }
 }

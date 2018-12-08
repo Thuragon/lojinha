@@ -20,6 +20,7 @@ namespace lojinha.Core.Services
             _storage = storage;
                  
         }
+
         public async Task<List<Produto>> ObterProdutos()
         {
             var key = "produtos";
@@ -32,6 +33,11 @@ namespace lojinha.Core.Services
             }
 
             return JsonConvert.DeserializeObject<List<Produto>>(value);
+        }
+
+        public async Task<Produto> ObterProduto(string id)
+        {
+            return await _storage.ObterProduto(id);
         }
     }
 }

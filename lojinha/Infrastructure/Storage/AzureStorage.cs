@@ -28,14 +28,14 @@ namespace lojinha.Infrastructure.Storage
             var table = _tableClient.GetTableReference("produtos");
             table.CreateIfNotExistsAsync().Wait();
 
-            var entity = new ProdutoEntity("13net",produto.Id.ToString());
+            var entity = new ProdutoEntity("13net", produto.Id.ToString());
             entity.Produto = json;
 
             TableOperation operation = TableOperation.Insert(entity);
             table.ExecuteAsync(operation).Wait();
         }
 
-         public async Task<List<Produto>> ObterProdutos()
+        public async Task<List<Produto>> ObterProdutos()
         {
             var table = _tableClient.GetTableReference("produtos");
             table.CreateIfNotExistsAsync().Wait();
@@ -49,9 +49,34 @@ namespace lojinha.Infrastructure.Storage
 
 
             return produtosEntity
-                .Where(p=> p != null && p.Produto != null)
+                .Where(p => p != null && p.Produto != null)
                 .Select(x => JsonConvert.DeserializeObject<Produto>(x.Produto)).ToList();
         }
 
+        public async Task<Produto> ObterProduto(string id)
+        {
+            var table = _tableClient.GetTableReference("produtos");
+            table.CreateIfNotExistsAsync().Wait();
+
+            var query = new TableQuery<ProdutoEntity>()
+                .Where
+                (
+                    TableQuery.GenerateFilterCondition
+                    ("PartitionKey", QueryComparisons.Equal, "13net")
+                )
+                .Where
+                (
+                    TableQuery.GenerateFilterCondition
+                    ("RowKey", QueryComparisons.Equal, id)
+                );
+
+            TableContinuationToken token = null;
+
+            var segment = await table
+                .ExecuteQuerySegmentedAsync(query, token);
+            var produtoEntity = segment.FirstOrDefault();
+
+            return JsonConvert.DeserializeObject<Produto>(produtoEntity.Produto);
+        }
     }
 }

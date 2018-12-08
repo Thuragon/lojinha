@@ -40,6 +40,7 @@ namespace lojinha
             services.AddScoped<IAzureStorage, AzureStorage>();
             services.AddSingleton<IRedisCache, RedisCache>();
             services.AddScoped<IProdutoServices, ProdutoServices>();
+            services.AddScoped<ICarrinhoService, CarrinhoService>();
             Mapper.Initialize(options =>
             {
                 options.AddProfile<ProdutoProfile>();
