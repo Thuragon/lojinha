@@ -10,4 +10,18 @@ namespace lojinha.Core.Models
         public int Id { get; set; }
         public String Nome { get; set; }
     }
+
+    public class Categoria
+    {
+        public int Id { get; set; }
+
+        public string Nome { get; set; }
+    }
+
+    public class Imagens
+    {
+        public int Id { get; set; }
+        public int ProdutoId { get; set; }
+        public string ImagemUrl { get; set; }
+    }
 }
